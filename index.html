@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>Spaceships Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="shooting-star"></div>
+    <div class="shooting-star delay-1"></div>
+    <div class="shooting-star delay-2"></div>
+
+  <!-- Menu -->
+  <nav class="navbar">
+    <div class="navbar-links">
+        <button onclick="showScreen('welcome')">Welcome</button>
+        <button onclick="showScreen('login')">Log In</button>
+        <button onclick="showScreen('register')">Sign Up</button>
+        <button onclick="openAbout()">About</button>
+    </div>
+  </nav>
+    
+  <!-- Welcome -->
+  <div id="welcome" class="screen active">
+
+    <div class="logo-container">
+        <img src="images/logo.jpg" alt="Logo" class="logo-image">
+    </div>
+
+    <h1 class="glow-title">Welcome to Spaceships Game</h1>
+
+    <div class="id-info">
+        <p>Noa Ioshpe | ID: 318773876</p>
+        <p>Noa Revivo | ID: 349140453</p>
+    </div>
+
+    <div class="welcome-buttons">
+        <button onclick="showScreen('login')">Log In</button>
+        <button onclick="showScreen('register')">Sign Up</button>
+        <button onclick="openAbout()">About</button>
+    </div>
+
+    <div class="external-link">
+        <a href="https://wed-2023.github.io/assignment2-318773876_314940453_assignment2/" target="_blank">Link To Our Website🔗</a>
+    </div>
+      
+  </div>
+
+  <!-- Registration -->
+<div id="register" class="screen">
+    <h2 class="title">Sign Up</h2>
+    <form onsubmit="return registerUser()" class="signup-form">
+  
+      <input type="text" id="reg-username" placeholder="Username" required>
+      <input type="password" id="reg-password" placeholder="Password" required>
+      <input type="password" id="reg-confirm" placeholder="Confirm Password" required>
+      <input type="text" id="reg-firstname" placeholder="First Name" required>
+      <input type="text" id="reg-lastname" placeholder="Last Name" required>
+      <input type="email" id="reg-email" placeholder="Email" required>
+  
+      <div class="birthdate-section">
+       <h4 class="birthdate-title">Date of Birth</h4>
+      <div class="birthdate">
+        <label>Day:
+          <select id="reg-day"></select>
+        </label>
+        <label>Month:
+          <select id="reg-month"></select>
+        </label>
+        <label>Year:
+          <select id="reg-year"></select>
+        </label>
+      </div>
+      </div>
+  
+      <div class="register-buttons">
+        <button type="submit">Register</button>
+        <button type="button" onclick="showScreen('welcome')">Back</button>
+      </div>
+  
+    </form>
+  </div>
+
+  <!-- Login -->
+<div id="login" class="screen">
+    <h2 class="title">Login</h2>
+    <form onsubmit="login(); return false;" class="login-form">
+      <input type="text" id="login-username" placeholder="Username" required>
+      <input type="password" id="login-password" placeholder="Password" required>
+      
+      <div class="login-buttons">
+        <button type="submit">Login</button>
+        <button type="button" onclick="showScreen('welcome')">Back</button>
+      </div>
+      
+      <p id="login-error" class="error-message"></p>
+    </form>
+  </div>
+
+
+  <dialog id="aboutDialog" class="about-dialog" dir="rtl">
+    <button class="close-btn" onclick="closeAbout()">❌</button>
+    <h2>About</h2>
+    <h1>תרגיל 2 - קורס סביבות פיתוח באינטרנט</h1>
+    <p><strong>מגישות:</strong> נעה ישפה 318773876, נועה רביבו 314940453</p>
+    <p>לא נעשה שימוש בTemplate ולא השתמשנו בjQuery</p>
+    <h2>הוראות:</h2>
+    <ul>
+        <li>השתמש בחיצים כדי להזיז את החללית הטובה</li>
+        <li>השתמש במקש שבחרת כדי לירות</li>
+        <li>הימנע מפגיעה של כדורי האויב בחללית שלך</li>
+        <li>השמד את כל החלליות הרעות כדי לנצח</li>
+    </ul>
+    <h2>קשיים בפיתוח:</h2>
+    <p>עמידה בכל כללי המשחק וסנכרון בין הפעולות של החלליות השונות בשילוב עם הצלילים המתאימים.</p>
+  </dialog>
+
+ <!-- Configuration Screen -->
+<div id="configuration" class="screen">
+    <div class="config-box">
+      <h2>Configuration</h2>
+  
+      <label for="fire-key">Choose Fire Key:</label>
+      <select id="fire-key">
+      </select>
+
+      <!-- time -->
+      <label for="game-duration">Game Duration (minutes):</label>
+      <select id="game-duration">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+  
+      <!-- color -->
+      <label for="theme-select">Choose Theme:</label>
+      <select id="theme-select">
+        <option value="blue">Blue</option>
+        <option value="pink">Pink</option>
+        <option value="purple">Purple</option>
+      </select>
+  
+      <!-- buttons -->
+      <button onclick="startGame()">Start Game</button>
+      <button onclick="showScreen('welcome')">Back</button>
+    </div>
+  </div>
+  
+
+<!-- Game Screen -->
+<div id="game" class="screen">
+    <div id="game-wrapper" style="display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
+      
+      <div id="scoreboard" class="info-panel">
+        <p>Score: <span id="score">0</span></p>
+        <p>Lives: <span id="lives">3</span></p>
+        <p>Time Left: <span id="time-left">00:00</span></p>
+      </div>
+  
+      <div id="game-container">
+        <canvas id="gameCanvas" width="700" height="500"></canvas>
+        <div id="player" class="player-ship"></div>
+      </div>
+  
+      <div id="new-game-box">
+        <button>New Game</button>
+      </div>
+  
+    </div>
+</div>
+  
+  
+<audio id="background-music" src="sounds/background.mp3" loop></audio>
+<audio id="hit-sound" src="sounds/hit.mp3"></audio>
+<audio id="death-sound" src="sounds/death.mp3"></audio>
+
+<footer>
+    <p>Spaceships Game | Created by Noa Ioshpe & Noa Revivo</p>
+    <p>Contact us: <a href="mailto:noa@gmail.com">noa@gmail.com</a></p>
+</footer>
+
+<div id="end-message">
+  <button class="close-btn-end" onclick="closeEndMessage()">❌</button>
+  <div id="end-message-content"></div>
+</div>
+  
+<script src="script.js"></script>
+</body>
+</html>
